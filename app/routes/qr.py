@@ -2,6 +2,8 @@ import logging
 
 from fastapi import APIRouter
 import qrcode
+from io import BytesIO
+from fastapi.responses import StreamingResponse
 
 logger = logging.getLogger(__name__)
 

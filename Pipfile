@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 qrcode = "*"
+uvicorn = "*"
+fastapi = "*"
 
 [dev-packages]
-fastapi = "*"
-uvicorn = "*"
 
 [requires]
 python_version = "3.12"
