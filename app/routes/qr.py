@@ -16,7 +16,7 @@ def create_router() -> APIRouter:
         # Generar el código QR
         qr = qrcode.make(data)
         buf = BytesIO() #pendiente de ver que hace esto
-        qr.save(buf, format='PNG')
+        qr.save(buf)
         buf.seek(0)
         return StreamingResponse(buf, media_type="image/png")
 
