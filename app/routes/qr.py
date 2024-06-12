@@ -13,7 +13,7 @@ def create_router() -> APIRouter:
     def generate_qr(data: str):
         # Generar el código QR
         qr = qrcode.make(data)
-        buf = BytesIO()
+        buf = BytesIO() #pendiente de ver que hace esto
         qr.save(buf, format='PNG')
         buf.seek(0)
         return StreamingResponse(buf, media_type="image/png")
