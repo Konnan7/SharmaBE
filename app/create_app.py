@@ -1,7 +1,8 @@
 from fastapi import FastAPI, APIRouter
 import uvicorn
+import os
 
-from .routes.qr import create_router
+from app.routes.qr import create_router
 
 
 def create_application() -> FastAPI:

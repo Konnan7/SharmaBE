@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def create_router() -> APIRouter:
     router = APIRouter()
 
-    @router.post("/generate_qr")
+    @router.get("/generate_qr")
     def generate_qr(data: str):
         # Generar el código QR
         qr = qrcode.make(data)

@@ -7,6 +7,11 @@ name = "pypi"
 qrcode = "*"
 uvicorn = "*"
 fastapi = "*"
+sqlalchemy = "*"
+typing-extensions = "*"
+pydantic = "*"
+redis = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 
