@@ -6,9 +6,9 @@ from databases import Database
 from app.config import Config
 from sqlalchemy import create_engine, MetaData
 
-from sqlalchemy.engine import Row
+# from sqlalchemy.engine import Row
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.expression import Select, Delete, Insert
+# from sqlalchemy.sql.expression import Select, Delete, Insert
 
 
 class DatabaseClient:
@@ -41,22 +41,6 @@ class DatabaseClient:
         for table in tables:
             setattr(self, table, self.metadata.tables[table])
 
-    async def get_first(self, query: Union[Select, Insert]) -> Optional[Row]:
-        async with self.database.transaction():
-            res = await self.database.fetch_one(query)
-        return res
 
-    async def get_all(self, query: Select) -> list[Row]:
-        async with self.database.transaction():
-            res = await self.database.fetch_all(query)
-        return res
-
-    async def get_paginated(self, query:Select, limit: int, offset: int) -> list[Row]:
-        query = query.limit(limit).offset(offset)
-        return await self.get_all(query)
-
-    async def execute_in_transaction(self,query: Delete):
-        async with self.database.transaction():
-            await self.database.execute(query)
 
 

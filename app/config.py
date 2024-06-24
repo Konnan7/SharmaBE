@@ -1,5 +1,5 @@
 import os
-from pydantic import AnyUrl, PostgresDsn, RedisDsn, BaseSettings
+from pydantic import AnyUrl, PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings
 from sqlalchemy import URL
 import redis
