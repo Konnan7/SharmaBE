@@ -12,7 +12,8 @@ class Usuarios(Base):
         UniqueConstraint("phone_number", name="phone_number_unique"),
     )
 
-    phone_number = Column(String, nullable=False, unique=True)
+    phone_prefix = Column(Integer, nullable=False, unique=True)
+    phone_number = Column(Integer, nullable=False, unique=True)
     id = Column(Integer, primary_key=True)
 
     created_at = Column(TIMESTAMP, default=datetime.datetime.utcnow)

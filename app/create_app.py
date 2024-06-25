@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from app.routes.qr import create_router
-from app.config import Config
+from SharmaBE.app.routes.qr import create_qr_router
+from SharmaBE.app.config import Config
 
-from app.clients.db import DatabaseClient
+from SharmaBE.app.clients.db import DatabaseClient
 
 
 
@@ -14,7 +14,7 @@ def create_application() -> FastAPI:
 
     redis_cache = RedisCache(config)
     database_client = DatabaseClient(config)
-    router = create_router()
+    qr_router = create_qr_router()
 
 
     app = FastAPI()

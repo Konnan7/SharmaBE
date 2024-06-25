@@ -7,7 +7,7 @@ class Tarifa(BaseModel):
     tipo: str
 
 
-class Usuarios(BaseModel):
+class User(BaseModel):
     nombre: str
     apellido1: str
     apellido2: str
@@ -15,7 +15,7 @@ class Usuarios(BaseModel):
     id_usuario: int  # Primary key
     tarifa: Optional[Tarifa]  # Relación con la clase Tarifa
     email: EmailStr
-    numero_telefono: str
-    numero_pie: int
+    numero_telefono: int
+    numero_pie: float
     entradas_disponibles: int
     club_preferencia: str

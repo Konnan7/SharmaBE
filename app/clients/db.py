@@ -3,7 +3,7 @@ from typing import Optional, Union
 import os
 
 from databases import Database
-from app.config import Config
+from SharmaBE.app.config import Config
 from sqlalchemy import create_engine, MetaData
 
 # from sqlalchemy.engine import Row

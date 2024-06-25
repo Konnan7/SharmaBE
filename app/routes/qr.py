@@ -8,10 +8,10 @@ from fastapi.responses import StreamingResponse
 logger = logging.getLogger(__name__)
 
 
-def create_router() -> APIRouter:
-    router = APIRouter()
+def create_qr_router() -> APIRouter:
+    qr_router = APIRouter()
 
-    @router.get("/generate_qr")
+    @qr_router.get("/generate_qr")
     def generate_qr(data: str):
         # Generar el código QR
         qr = qrcode.make(data)
@@ -20,4 +20,4 @@ def create_router() -> APIRouter:
         buf.seek(0)
         return StreamingResponse(buf, media_type="image/png")
 
-    return router
+    return qr_router
