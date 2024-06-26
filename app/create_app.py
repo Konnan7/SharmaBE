@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+<<<<<<< HEAD
 from SharmaBE.app.routes.qr import create_qr_router
 from SharmaBE.app.routes.usuarios import create_user_router
 from SharmaBE.app.config import Config
@@ -7,6 +8,13 @@ from SharmaBE.app.config import Config
 from SharmaBE.app.clients.db import DatabaseClient
 
 
+=======
+from app.routes.qr import create_qr_router
+from app.routes.usuarios import create_user_router
+from app.config import Config
+
+from app.clients.db import DatabaseClient
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 
 def create_application() -> FastAPI:

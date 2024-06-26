@@ -1,6 +1,10 @@
 from typing import Optional, Literal
 from pydantic import BaseModel, EmailStr
+<<<<<<< HEAD
 from SharmaBE.app.schemas.entradas import ListaEntradas
+=======
+from app.schemas.entradas import ListaEntradas
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 
 class Tarifa(BaseModel):

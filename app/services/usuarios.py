@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 from SharmaBE.app.clients.db import DatabaseClient
 from SharmaBE.app.schemas.usuarios import User
 from SharmaBE.app.exceptions import UserAlreadyExists
+=======
+from app.clients.db import DatabaseClient
+from app.schemas.usuarios import User
+from app.exceptions import UserAlreadyExists
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 from sqlalchemy.dialects.postgresql import insert
 

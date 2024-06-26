@@ -5,10 +5,17 @@ import qrcode
 from io import BytesIO
 from fastapi.responses import StreamingResponse
 
+<<<<<<< HEAD
 from SharmaBE.app.services.qr import QRService
 from SharmaBE.app.schemas.qr import *
 
 from SharmaBE.app.clients.db import DatabaseClient
+=======
+from app.services.qr import QRService
+from app.schemas.qr import *
+
+from app.clients.db import DatabaseClient
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 logger = logging.getLogger(__name__)
 

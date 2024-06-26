@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from SharmaBE.app.clients.db import DatabaseClient
+=======
+from app.clients.db import DatabaseClient
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 
 class QRService:

@@ -3,7 +3,11 @@ from typing import Optional, Union
 import os
 
 from databases import Database
+<<<<<<< HEAD
 from SharmaBE.app.config import Config
+=======
+from app.config import Config
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 from sqlalchemy import create_engine, MetaData
 
 from sqlalchemy.engine import Row

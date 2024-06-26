@@ -1,9 +1,15 @@
 import logging
 
 from fastapi import APIRouter
+<<<<<<< HEAD
 from SharmaBE.app.schemas.usuarios import User
 from SharmaBE.app.services.usuarios import UserService
 from SharmaBE.app.clients.db import DatabaseClient
+=======
+from app.schemas.usuarios import User
+from app.services.usuarios import UserService
+from app.clients.db import DatabaseClient
+>>>>>>> ff1a877 (Añadido repositorio de BBDD)
 
 
 
