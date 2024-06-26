@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 
+
 from app.routes.qr import create_qr_router
 from app.routes.usuarios import create_user_router
 from app.config import Config
 
 from app.clients.db import DatabaseClient
+
 
 
 def create_application() -> FastAPI:

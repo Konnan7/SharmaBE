@@ -5,10 +5,12 @@ import qrcode
 from io import BytesIO
 from fastapi.responses import StreamingResponse
 
+
 from app.services.qr import QRService
 from app.schemas.qr import *
 
 from app.clients.db import DatabaseClient
+
 
 logger = logging.getLogger(__name__)
 

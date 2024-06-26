@@ -3,6 +3,7 @@ from pydantic import BaseModel, EmailStr
 from app.schemas.entradas import ListaEntradas
 
 
+
 class Tarifa(BaseModel):
     centro: Literal["Gava", "Barcelona", "Madrid"]
     tipo: str
