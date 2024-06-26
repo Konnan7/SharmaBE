@@ -17,9 +17,18 @@ def create_user_router(database_client:DatabaseClient) -> APIRouter:
 
     @user_router.post("/")
     async def add_user(user_profile: User):
-        user_id = await user_service.create_user(user_profile)
+        user = await user_service.create_user(user_profile)
+        return user.id
+
+
+    @user_router.on_event("startup")
+    async def startup():
+        await database_client.connect()
+
+    @user_router.on_event("shutdown")
+    async def shutdown():
+        await database_client.disconnect()
 
 
 
-
-     return user_router
+    return user_router

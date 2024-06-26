@@ -6,9 +6,9 @@ from databases import Database
 from SharmaBE.app.config import Config
 from sqlalchemy import create_engine, MetaData
 
-# from sqlalchemy.engine import Row
+from sqlalchemy.engine import Row
 from sqlalchemy.orm import Session
-# from sqlalchemy.sql.expression import Select, Delete, Insert
+from sqlalchemy.sql.expression import Select, Delete, Insert
 
 
 class DatabaseClient:
@@ -27,6 +27,11 @@ class DatabaseClient:
 
         else:
             self.database = Database(str(self.config.postgres_host))
+
+    async def get_first(self, query: Union[Select, Insert]) -> Optional[Row]:
+        async with self.database.transaction():
+            res = await self.database.fetch_one(query)
+        return res
 
     def _reflect_metadata(self) -> None:
         self.metadata.reflect(self.engine)
