@@ -1,0 +1,29 @@
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - ENVIRONMENT=local
+    ports:
+      - "8080:8080"
+    entrypoint: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+    volumes:
+      - ./app:/usr/src/app
+      - ./models:/usr/src/models
+    environment:
+      - db_postgres_host=postgressql://postgres:postgres@postgresdb:5432/postgres
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:14.1-alpine
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env-local
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+volumes:
+  pgdb:
