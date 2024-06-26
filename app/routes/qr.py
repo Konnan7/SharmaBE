@@ -5,11 +5,17 @@ import qrcode
 from io import BytesIO
 from fastapi.responses import StreamingResponse
 
+from SharmaBE.app.services.qr import QRService
+from SharmaBE.app.schemas.qr import *
+
+from SharmaBE.app.clients.db import DatabaseClient
+
 logger = logging.getLogger(__name__)
 
 
-def create_qr_router() -> APIRouter:
+def create_qr_router(database_client:DatabaseClient) -> APIRouter:
     qr_router = APIRouter()
+    qr_service = QRService(database_client)
 
     @qr_router.get("/generate_qr")
     def generate_qr(data: str):
