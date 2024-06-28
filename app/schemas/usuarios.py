@@ -10,15 +10,16 @@ class Tarifa(BaseModel):
 
 
 class User(BaseModel):
-    nombre: str
-    apellido1: str
-    apellido2: str
-    fecha_nacimiento: str  # Puedes usar tipos específicos para fechas si lo prefieres
-    id_usuario: int  # Primary key
-    tarifa: Optional[Tarifa]  # Relación con la clase Tarifa
+    name: str
+    surname1: str
+    surname2: str
+    date_of_birth: str  # Puedes usar tipos específicos para fechas si lo prefieres
+    user_id: int  # Primary key
+    # tariff: Optional[Tarifa]  # Relación con la clase Tarifa
     email: EmailStr
-    numero_telefono: int
-    numero_pie: float
-    entradas_disponibles: int
-    club_preferencia: str
-    entradas: ListaEntradas
+    phone_prefix: int
+    phone_number: int
+    foot_number: float
+    available_tickets: ListaEntradas
+    pref_club: int
+    tickets: ListaEntradas

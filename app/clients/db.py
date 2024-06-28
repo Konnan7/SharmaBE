@@ -1,9 +1,9 @@
 
 from typing import Optional, Union
 import os
-
 from databases import Database
 from app.config import Config
+from models.base import Base
 
 from sqlalchemy import create_engine, MetaData
 
@@ -19,6 +19,7 @@ class DatabaseClient:
         self.session = Session(bind=self.engine, future=True)  # starting a session in the DB
         self.metadata = MetaData()  # metadata.tables["user"]
         self.metadata.bind = self.engine
+        Base.metadata.create_all(self.engine)
         self._reflect_metadata()
         if tables:
             self._set_internal_database_tables(tables)

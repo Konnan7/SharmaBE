@@ -11,7 +11,7 @@ from app.clients.db import DatabaseClient
 
 def create_application() -> FastAPI:
     config = Config()
-    tables = ["usuarios", "tarifas"]
+    tables = ["usuarios"]
 
     database_client = DatabaseClient(config,tables)
     qr_router = create_qr_router(database_client)
