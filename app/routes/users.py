@@ -1,7 +1,7 @@
 import logging
 
 from fastapi import APIRouter
-from app.schemas.users import User
+from models.users import Users
 from app.services.users import UserService
 from app.clients.db import DatabaseClient
 
@@ -17,7 +17,7 @@ def create_user_router(database_client:DatabaseClient) -> APIRouter:
 
 
     @user_router.post("/")
-    async def add_user(user_profile: User):
+    async def add_user(user_profile: Users):
         user = await user_service.create_user(user_profile)
         return user.id
 
