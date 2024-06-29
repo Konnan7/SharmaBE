@@ -5,7 +5,6 @@ from pydantic import BaseModel, EmailStr
 class Entrada(BaseModel):
     tipo: Literal["Manana", "Dia", "Socio"]
     estado: Literal["Activada", "Desactivada", "Utilizada"]
-    created_at:
 
 
 class ListaEntradas(BaseModel):

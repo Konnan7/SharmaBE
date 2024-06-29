@@ -1,6 +1,6 @@
 from typing import Optional, Literal
 from pydantic import BaseModel, EmailStr
-from app.schemas.entradas import ListaEntradas
+from app.schemas.tickets import ListaEntradas
 
 
 

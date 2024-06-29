@@ -1,8 +1,8 @@
 import logging
 
 from fastapi import APIRouter
-from app.schemas.usuarios import User
-from app.services.usuarios import UserService
+from app.schemas.users import User
+from app.services.users import UserService
 from app.clients.db import DatabaseClient
 
 

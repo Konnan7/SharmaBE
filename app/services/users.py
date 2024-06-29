@@ -1,5 +1,5 @@
 from app.clients.db import DatabaseClient
-from app.schemas.usuarios import User
+from app.schemas.users import User
 from app.exceptions import UserAlreadyExists
 
 

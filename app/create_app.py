@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 
 from app.routes.qr import create_qr_router
-from app.routes.usuarios import create_user_router
+from app.routes.users import create_user_router
 from app.config import Config
 
 from app.clients.db import DatabaseClient
@@ -11,7 +11,7 @@ from app.clients.db import DatabaseClient
 
 def create_application() -> FastAPI:
     config = Config()
-    tables = ["usuarios"]
+    tables = ["users", "tickets", "clubs", "rates", "payments"]
 
     database_client = DatabaseClient(config,tables)
     qr_router = create_qr_router(database_client)
