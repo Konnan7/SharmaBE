@@ -1,14 +1,14 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
-from sqlalchemy.orm import relationship
 from models.base import Base
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, UniqueConstraint
 
 class Rates(Base):
     __tablename__ = "rates"
 
-    rate_id = Column(Integer, primary_key=True, autoincrement=True)
-    price = Column(Float, nullable=False)
-    club_id = Column(Integer, ForeignKey("clubs.club_id"), nullable=False)
-    type = Column(String, nullable=False)
+    Rate_id = Column(Integer, primary_key=True, autoincrement=True)
+    Price = Column(Float, nullable=False)
+    Club_id = Column(Integer, ForeignKey("clubs.Club_id"), nullable=False)
+    Type = Column(String, nullable=False)
 
-    # Relationships
-    club = relationship("Clubs", back_populates="rates")
+    __table_args__ = (
+        UniqueConstraint("Rate_id", name="rate_id_unique"),
+    )

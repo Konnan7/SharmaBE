@@ -1,16 +1,15 @@
-from sqlalchemy import Column, Integer, String, Boolean, JSON
-from sqlalchemy.orm import relationship
 from models.base import Base
+from sqlalchemy import Column, Integer, String, UniqueConstraint
 
 class Clubs(Base):
     __tablename__ = "clubs"
 
-    club_id = Column(Integer, primary_key=True, autoincrement=True)
-    schedules = Column(JSON, nullable=True)  # Assuming JSON for storing schedules
-    location = Column(String, nullable=False)
-    name = Column(String, nullable=False)
-    status = Column(String, nullable=False)
+    Club_id = Column(Integer, primary_key=True, autoincrement=True)
+    Horarios = Column(String, nullable=False)  # JSON or String depending on use case
+    Location = Column(String, nullable=False)  # Assuming GPS coordinates as string
+    Name = Column(String, nullable=False, unique=True)  # Unique constraint added
+    Status = Column(String, nullable=False)  # Active or Not active
 
-    # Relationships
-    users = relationship("Users", back_populates="pref_club")
-    rates = relationship("Rates", back_populates="club")
+    __table_args__ = (
+        UniqueConstraint("Name", name="club_name_unique"),
+    )

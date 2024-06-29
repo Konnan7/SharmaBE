@@ -1,16 +1,17 @@
 import datetime
-from sqlalchemy import Column, Integer, Float, TIMESTAMP
-from sqlalchemy.orm import relationship
 from models.base import Base
+from sqlalchemy import Column, Integer, Float, DateTime, UniqueConstraint
 
 class Payments(Base):
     __tablename__ = "payments"
 
-    payment_id = Column(Integer, primary_key=True, autoincrement=True)
-    price = Column(Float, nullable=False)
-    tax = Column(Float, nullable=False)
-    external_payment_id = Column(Integer, nullable=False)
-    date_of_creation = Column(TIMESTAMP, default=datetime.datetime.utcnow)
+    Payment_id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
+    Price = Column(Float, nullable=False)
+    Tax = Column(Float, nullable=False)
+    External_payment_id = Column(Integer, nullable=False, unique=True)  # Unique constraint added
+    Date_of_creation = Column(DateTime, default=datetime.datetime.utcnow)
 
-    # Relationships
-    tickets = relationship("Tickets", back_populates="payment")
+    __table_args__ = (
+        UniqueConstraint("Payment_id", name="payment_id_unique"),
+        UniqueConstraint("External_payment_id", name="external_payment_id_unique"),
+    )

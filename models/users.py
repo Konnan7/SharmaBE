@@ -1,27 +1,29 @@
 import datetime
-from sqlalchemy import Column, Integer, String, Date, Boolean, Float, ForeignKey, TIMESTAMP
-from sqlalchemy.orm import relationship
 from models.base import Base
+from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey, UniqueConstraint
+from sqlalchemy.orm import relationship
 
 class Users(Base):
     __tablename__ = "users"
 
-    user_id = Column(Integer, primary_key=True, autoincrement=True)
-    surname1 = Column(String, nullable=False)
-    surname2 = Column(String, nullable=False)
-    date_of_birth = Column(Date, nullable=False)
-    email = Column(String, nullable=False, unique=True)
-    phone_number = Column(String, nullable=False, unique=True)  # Using String for phone number
-    phone_prefix = Column(String, nullable=False)  # Using String for phone prefix
-    foot_number = Column(Float, nullable=False)
-    pref_club_id = Column(Integer, ForeignKey("clubs.club_id"), nullable=True)
-    user_tickets = Column(String, nullable=True)  # You might want to use a relationship instead
-    account_stripe_id = Column(String, nullable=True)
-    reduced = Column(Boolean, default=False)
-    end_reduced = Column(Date, nullable=True)
+    user_id = Column(Integer, primary_key=True, autoincrement=True, unique=True)  # Unique constraint added
+    Surname1 = Column(String, nullable=False)
+    Surname2 = Column(String, nullable=True)
+    Date_of_birth = Column(Date, nullable=False)
+    Email = Column(String, nullable=False, unique=True)
+    Phone_number = Column(String, nullable=False, unique=True)
+    Phone_prefix = Column(String, nullable=False, unique=True)
+    Foot_number = Column(Float, nullable=False)
+    Pref_club_id = Column(Integer, ForeignKey("clubs.Club_id"))
+    User_tickets = relationship("Tickets", back_populates="user")
+    Account_stripe_id = Column(String, nullable=True, unique=True)
+    Reduced = Column(Boolean, default=False)
+    End_reduced = Column(Date, nullable=True)
 
-    created_at = Column(TIMESTAMP, default=datetime.datetime.utcnow)
-
-    # Relationships
-    pref_club = relationship("Clubs", back_populates="users")
-    tickets = relationship("Tickets", back_populates="user")
+    __table_args__ = (
+        UniqueConstraint("user_id", name="user_id_unique"),
+        UniqueConstraint("Email", name="email_unique"),
+        UniqueConstraint("Phone_number", name="phone_number_unique"),
+        UniqueConstraint("Phone_prefix", name="phone_prefix_unique"),
+        UniqueConstraint("Account_stripe_id", name="account_stripe_id_unique"),
+    )
