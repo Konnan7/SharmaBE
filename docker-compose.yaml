@@ -12,11 +12,11 @@ services:
       - ./app:/usr/src/app
       - ./models:/usr/src/models
     environment:
-      - db_postgres_host=postgressql://postgres:postgres@postgresdb:5432/postgres
+      - db_postgres_host=postgresql://sharma:sharma@sharmadb:5432/sharmabe
     depends_on:
-      - postgresdb
+      - sharmadb
 
-  postgresdb:
+  sharmadb:
     image: postgres:14.1-alpine
     ports:
       - "5432:5432"

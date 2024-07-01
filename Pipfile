@@ -12,6 +12,9 @@ typing-extensions = "*"
 pydantic = "*"
 redis = "*"
 pydantic-settings = "*"
+databases = "*"
+psycopg2-binary = "*"
+asyncpg = "*"
 
 [dev-packages]
 
