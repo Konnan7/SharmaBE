@@ -15,6 +15,7 @@ pydantic-settings = "*"
 databases = "*"
 psycopg2-binary = "*"
 asyncpg = "*"
+alembic = "*"
 
 [dev-packages]
 
