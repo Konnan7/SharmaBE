@@ -1,3 +1,5 @@
+from datetime import date
+
 from typing import Optional, Literal
 from pydantic import BaseModel, EmailStr
 from app.schemas.tickets import ListaEntradas
@@ -12,14 +14,16 @@ class Tarifa(BaseModel):
 class User(BaseModel):
     name: str
     surname1: str
-    surname2: str
-    date_of_birth: str  # Puedes usar tipos específicos para fechas si lo prefieres
-    user_id: int  # Primary key
+    surname2: Optional[str]
+    date_of_birth: date  # Puedes usar tipos específicos para fechas si lo prefieres
     # tariff: Optional[Tarifa]  # Relación con la clase Tarifa
     email: EmailStr
-    phone_prefix: int
-    phone_number: int
-    foot_number: float
-    available_tickets: ListaEntradas
-    pref_club: int
-    tickets: ListaEntradas
+    phone_prefix: str
+    phone_number: str
+    foot_number: Optional[float]
+    # available_tickets: Optional[ListaEntradas]
+    pref_club_id: int
+    # user_tickets: Optional[ListaEntradas]
+    account_stripe_id: str
+    reduced: bool
+    end_reduced: date

@@ -7,13 +7,14 @@ class Users(Base):
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, autoincrement=True, unique=True)  # Unique constraint added
+    Name = Column(String, nullable=False)
     Surname1 = Column(String, nullable=False)
     Surname2 = Column(String, nullable=True)
     Date_of_birth = Column(Date, nullable=False)
     Email = Column(String, nullable=False, unique=True)
     Phone_number = Column(String, nullable=False, unique=True)
     Phone_prefix = Column(String, nullable=False, unique=True)
-    Foot_number = Column(Float, nullable=False)
+    Foot_number = Column(Float, nullable=True)
     Pref_club_id = Column(Integer, ForeignKey("clubs.Club_id"))
     User_tickets = relationship("Tickets", back_populates="user")
     Account_stripe_id = Column(String, nullable=True, unique=True)
