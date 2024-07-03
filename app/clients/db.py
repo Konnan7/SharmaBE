@@ -4,12 +4,17 @@ import os
 from databases import Database
 from app.config import Config
 from models.base import Base
+import logging
 
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, inspect
 
 from sqlalchemy.engine import Row
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import Select, Delete, Insert
+
+from app.clients.init_db import init_db
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
 
 
 class DatabaseClient:
@@ -19,8 +24,19 @@ class DatabaseClient:
         self.session = Session(bind=self.engine, future=True)  # starting a session in the DB
         self.metadata = MetaData()  # metadata.tables["user"]
         self.metadata.bind = self.engine
-        Base.metadata.create_all(self.engine)
         self._reflect_metadata()
+        inspector = inspect(self.engine)
+        logging.debug(f"Clubs set as: {inspector.has_table("clubs")}")
+        logging.debug(f"Rates set as: {inspector.has_table("rates")}")
+        logging.debug(f"Las tablas que hay en la BBDD son: {inspector.get_table_names()}")
+
+        if not inspector.has_table("clubs") or not inspector.has_table("rates"):
+            init_db(self.engine, self.session)
+            self._reflect_metadata()
+
+        else:
+                print("Las tablas ya existen. No se realizaron cambios.")
+
         if tables:
             self._set_internal_database_tables(tables)
 

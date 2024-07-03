@@ -12,18 +12,22 @@ class Tarifa(BaseModel):
 
 
 class User(BaseModel):
-    Name: str
-    Surname1: str
-    Surname2: Optional[str]
-    Date_of_birth: date  # Puedes usar tipos específicos para fechas si lo prefieres
+    name: str
+    surname1: str
+    surname2: Optional[str]
+    date_of_birth: date  # Puedes usar tipos específicos para fechas si lo prefieres
     # tariff: Optional[Tarifa]  # Relación con la clase Tarifa
-    Email: EmailStr
-    Phone_prefix: str
-    Phone_number: str
-    Foot_number: Optional[float]
+    email: EmailStr
+    phone_prefix: str
+    phone_number: str
+    foot_number: Optional[float]
     # available_tickets: Optional[ListaEntradas]
-    Pref_club_id: int
+    pref_club_id: int
     # user_tickets: Optional[ListaEntradas]
-    Account_stripe_id: str
-    Reduced: bool
-    End_reduced: date
+    account_stripe_id: str
+    reduced: bool
+    end_reduced: date
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

@@ -16,6 +16,9 @@ databases = "*"
 psycopg2-binary = "*"
 asyncpg = "*"
 alembic = "*"
+bcrypt = "*"
+python-jose = "*"
+passlib = "*"
 
 [dev-packages]
 

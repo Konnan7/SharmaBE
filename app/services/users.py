@@ -6,12 +6,17 @@ from sqlalchemy.sql import func
 from sqlalchemy.sql.expression import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from fastapi import HTTPException
 
 from models.users import Users
 from app.schemas.users import User
-import app.exceptions as exceptions
+from app.services.auth import AuthService
+from app.exception_handlers import UserNotFound, UserAlreadyExists
 
 from app.clients.db import DatabaseClient
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class UserService:
@@ -20,34 +25,46 @@ class UserService:
 
 
     async def create_user(self,
-                          user: User):
-        #try:
-            new_user = Users(Name=user.Name,
-                             Surname1=user.Surname1,
-                             Surname2=user.Surname2,
-                             Date_of_birth=user.Date_of_birth,
-                             Email=user.Email,
-                             Phone_number=user.Phone_number,
-                             Phone_prefix=user.Phone_prefix,
-                             Foot_number=user.Foot_number,
-                             Pref_club_id=user.Pref_club_id,
-                             Account_stripe_id=user.Account_stripe_id,
-                             Reduced=user.Reduced,
-                             End_reduced=user.End_reduced)
+                          user: User,
+                          password: str) -> int:
+        db_user = self.database_client.session.query(Users).filter(Users.phone_number == user.phone_number).first()
+        logging.debug(f"db_user query is: {db_user}")
+
+        #Miro si ya existe el user que intentamos crear
+        if db_user:
+            raise HTTPException(status_code=400, detail="Username already registered")
+
+        hashed_password = AuthService.get_password_hash(password)
+
+        try:
+            new_user = Users(name=user.name,
+                             surname1=user.surname1,
+                             surname2=user.surname2,
+                             date_of_birth=user.date_of_birth,
+                             email=user.email,
+                             phone_number=user.phone_number,
+                             phone_prefix=user.phone_prefix,
+                             foot_number=user.foot_number,
+                             pref_club_id=user.pref_club_id,
+                             account_stripe_id=user.account_stripe_id,
+                             reduced=user.reduced,
+                             end_reduced=user.end_reduced,
+                             hashed_password=hashed_password)
             self.database_client.session.add(new_user)
             self.database_client.session.commit()
-            res = new_user.user_id
-            return res
-        #except IntegrityError as e:
-        #    self.database_client.session.rollback()
-        #    raise exceptions.UserAlreadyExists
-
+            res = new_user
+        except:
+            self.database_client.session.rollback()
+            raise UserAlreadyExists
+        return res.user_id
 
     async def get_user_by_id(self,  user_id: int = 0) -> User:
         query = self._get_user_info_query(user_id)
         user = await self.database_client.get_first(query)
-        user_info = dict(zip(user._mapping.keys(), user._mapping.values()))
-
+        if user:
+            user_info = dict(zip(user._mapping.keys(), user._mapping.values()))
+        else:
+            raise UserNotFound(user_id)
         return User(**user_info)
 
     async def update_user(self, session: AsyncSession, user_id: int, **kwargs):
