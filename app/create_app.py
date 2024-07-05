@@ -4,7 +4,6 @@ from app.exception_handlers import add_exception_handlers
 
 from app.routes.qr import create_qr_router
 from app.routes.users import create_user_router
-from app.routes.auth import create_auth_router
 from app.config import Config
 
 from app.clients.db import DatabaseClient
@@ -18,13 +17,11 @@ def create_application() -> FastAPI:
     database_client = DatabaseClient(config,tables)
     qr_router = create_qr_router(database_client)
     user_router = create_user_router(database_client)
-    auth_router = create_auth_router(database_client)
 
     app = FastAPI()
 #Routers
     app.include_router(qr_router)  # incluye las rutas de qr.py, habra que añadir mas
     app.include_router(user_router)
-    app.include_router(auth_router)
 
     add_exception_handlers(app)
     return app

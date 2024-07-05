@@ -28,6 +28,16 @@ class User(BaseModel):
     reduced: bool
     end_reduced: date
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class UserCreate(BaseModel):
+    phone_number: str
+    password: str
+
+
+class TokenData(BaseModel):
+    phone_number: str | None = None
