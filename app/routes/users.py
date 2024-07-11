@@ -5,10 +5,9 @@ from fastapi import APIRouter
 from models.users import Users
 from app.services.users import UserService
 from app.clients.db import DatabaseClient
-from app.schemas.users import User, Token, UserCreate
+from app.schemas.users import User, Token, UserCreate, TokenData, UserUpdate
 
 
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -27,18 +26,27 @@ def create_user_router(database_client: DatabaseClient) -> APIRouter:
         token = user_service.login_for_access_token(user)
         return token
 
-    @user_router.get("/{user_id}")
-    async def get_user(user_id: Optional[int]) -> User:
-        user = await user_service.get_user_by_id(user_id)
+    # @user_router.get("/user/{user_id}")
+    # async def get_user(user_id: Optional[int]) -> User:
+    #     user = await user_service.get_user_by_id(user_id)
+    #     return user
+
+    @user_router.get("/user/{token}")
+    async def get_user(token: str) -> User:
+        token_data = user_service.verify_token(token)
+        user = await user_service.get_user_by_phone_number(token_data.phone_number)
         return user
 
-    @user_router.get("/{token}")
-    async def get_user_with_token(token: str) -> User:
-        user = await user_service.get_current_user(token)
-        return user
+    @user_router.patch("/update/{token}")
+    async def update_user(token:str, user_update:UserUpdate) -> User:
+        token_data = user_service.verify_token(token)
+        updated_user = await user_service.update_user(token_data.phone_number, user_update)
+        return updated_user
 
-
-
+    @user_router.delete("/delete/{token}")
+    async def delete_user(token: str):
+        token_data = user_service.verify_token(token)
+        user = await user_service.delete_user(token_data.phone_number)
 
     @user_router.on_event("startup")
     async def startup():

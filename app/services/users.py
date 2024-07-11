@@ -16,7 +16,7 @@ from jose import JWTError, jwt
 
 # App imports
 from models.users import Users
-from app.schemas.users import User, UserCreate, TokenData, Token
+from app.schemas.users import User, UserCreate, TokenData, Token, UserUpdate
 from app.exception_handlers import UserNotFound, UserAlreadyExists
 
 from app.clients.db import DatabaseClient
@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class UserService:
@@ -70,6 +72,8 @@ class UserService:
             raise UserAlreadyExists
         return res.user_id
 
+
+
     async def get_user_by_id(self,  user_id: int = 0) -> User:
         query = self._get_user_by_user_id_query(user_id)
         user = await self.database_client.get_first(query)
@@ -88,20 +92,42 @@ class UserService:
             raise UserNotFound(phone_number)
         return User(**user_info)
 
-    async def update_user(self, session: AsyncSession, user_id: int, **kwargs):
-        async with session.begin():
-            user = await session.get(Users, user_id)
-            if user:
-                for key, value in kwargs.items():
-                    setattr(user, key, value)
-        return user
+    async def update_user(self, phone_number: str, user_updated:UserUpdate):
+        # async with self.database_client.session.begin():
+        query = select(Users).where(Users.phone_number == phone_number)
+        result = self.database_client.session.execute(query)
+        user_info = result.scalar_one_or_none()
+        logging.debug(f"User_info is: {user_info}")
+        logging.debug(f"User_updated in dictionary format is: {user_updated.dict()}")
 
-    async def delete_user(self, session: AsyncSession, user_id: int):
-        async with session.begin():
-            user = await session.get(Users, user_id)
+
+        if user_info:
+            user_updated_info=user_updated.dict(exclude_none=True)
+            for key, value in user_updated_info.items():
+                if value is not None:
+                    logging.debug(f"For key: {key}, we assigned the value: {value}")
+                    setattr(user_info, key, value)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        # user = User(**user_info)
+        self.database_client.session.commit()
+
+        return user_info
+
+    async def delete_user(self, phone_number: str):
+        async with self.database_client.session.begin():
+            user = self._get_user_by_phone_number_query(phone_number)
             if user:
-                await session.delete(user)
-        return user
+                await self.database_client.session.delete(user)
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found"
+                )
+        return print(f"User {phone_number} deleted successfully")
 
     async def get_current_user(self, token: str):
         credentials_exception = HTTPException(
@@ -145,6 +171,29 @@ class UserService:
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
+
+    @staticmethod
+    def verify_token(token: str = Depends(oauth2_scheme)):
+        credentials_exception = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        try:
+            logging.debug(f"Trying payload")
+
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            logging.debug(f"Decode payload: {payload}")
+
+            phone_number: str = payload.get("sub")
+            if phone_number is None:
+                raise credentials_exception
+            token_data = TokenData(phone_number=phone_number)
+        except JWTError:
+            logging.debug(f"Error verifying credentials")
+
+            raise credentials_exception
+        return token_data
 
     def get_password_hash(self,password):
         return self.pwd_context.hash(password)

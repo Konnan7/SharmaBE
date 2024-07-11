@@ -29,6 +29,19 @@ class User(BaseModel):
     end_reduced: date
 
 
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    surname1: Optional[str] = None
+    surname2: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    email: Optional[EmailStr] = None
+    phone_prefix: Optional[str] = None
+    foot_number: Optional[float] = None
+    pref_club_id: Optional[int] = None
+    reduced: Optional[bool] = None
+    end_reduced: Optional[date] = None
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
