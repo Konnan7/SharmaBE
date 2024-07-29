@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 
 
 from app.schemas.users import TokenData
+from app.schemas.rates import Rates
 
 import logging
 logger = logging.getLogger(__name__)
@@ -15,6 +16,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 
 def generate_random_string(length=25):
@@ -46,3 +48,9 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
     return token_data
 
+
+def calculate_total_cost(list_of_rates: list[Rates]) -> int:
+    total_cost = 0
+    for rate in list_of_rates:
+        total_cost += rate.amount
+    return total_cost

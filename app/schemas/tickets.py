@@ -12,17 +12,31 @@ class TicketBase(BaseModel):
     payment_id: int
     rate_snapshot: str
 
-class TicketCreate(TicketBase):
-    pass
+
+class TicketResponse(BaseModel):
+    ticket_id: int
+    status: str
+    date_of_creation: datetime
+    qr_id: str
+    payment_id: int
+    rate_snapshot: str
+    user_id: int
+
+class TicketCreate(BaseModel):
+    rate_snapshot: str
+    status: str = "Available"
+    payment_id: int = 1
 
 class TicketUpdate(BaseModel):
     status: Optional[str] = None
 
-class Ticket(TicketBase):
+class Ticket(BaseModel):
     ticket_id: int
     date_of_creation: datetime
     user_id: Optional[int] = None
 
+class TicketList(BaseModel):
+    list_of_tickets: list[Ticket]
     class Config:
         orm_mode = True
 

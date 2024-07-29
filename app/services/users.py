@@ -64,8 +64,11 @@ class UserService:
                              reduced=user.reduced,
                              end_reduced=user.end_reduced,
                              hashed_password=hashed_password)
+            logging.debug(f"db_user query is: {new_user}")
+
             self.database_client.session.add(new_user)
             self.database_client.session.commit()
+
             res = new_user
         except:
             self.database_client.session.rollback()
@@ -143,7 +146,7 @@ class UserService:
             token_data = TokenData(username=username)
         except JWTError:
             raise credentials_exception
-        user = await UserService.get_user_by_id(token_data.phone_number)
+        user = await self.get_user_by_id(token_data.phone_number)
         if user is None:
             raise credentials_exception
         return user

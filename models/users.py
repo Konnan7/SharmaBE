@@ -16,7 +16,7 @@ class Users(Base):
     phone_prefix = Column(String, nullable=False)
     foot_number = Column(Float, nullable=True)
     pref_club_id = Column(Integer, ForeignKey("clubs.club_id"))
-    user_tickets = relationship("Tickets", back_populates="user")
+    # user_tickets = relationship("Tickets", back_populates="user")
     account_stripe_id = Column(String, nullable=True, unique=True)
     reduced = Column(Boolean, default=False)
     end_reduced = Column(Date, nullable=True)
@@ -26,6 +26,6 @@ class Users(Base):
         UniqueConstraint("user_id", name="user_id_unique"),
         UniqueConstraint("email", name="email_unique"),
         UniqueConstraint("phone_number", name="phone_number_unique"),
-        UniqueConstraint("phone_prefix", name="phone_prefix_unique"),
+        # UniqueConstraint("phone_prefix", name="phone_prefix_unique"),
         UniqueConstraint("account_stripe_id", name="account_stripe_id_unique"),
     )

@@ -2,7 +2,6 @@ from datetime import date
 
 from typing import Optional, Literal
 from pydantic import BaseModel, EmailStr
-from app.schemas.tickets import ListaEntradas
 
 
 

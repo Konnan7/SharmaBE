@@ -1,18 +1,30 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.schemas.tickets import Ticket, TicketCreate, TicketUpdate
+
+from app.schemas.tickets import Ticket, TicketCreate, TicketUpdate, TicketList
 from app.services.tickets import TicketService
 from app.clients.db import DatabaseClient
 from app.dependencies import verify_token
+from app.schemas.token import TokenData
+
+from app.services.payments import PaymentService
 from typing import List
 
 def create_ticket_router(database_client: DatabaseClient) -> APIRouter:
     ticket_router = APIRouter()
     ticket_service = TicketService(database_client)
 
-    @ticket_router.post("/", response_model=Ticket, status_code=201)
-    async def create_ticket(ticket: TicketCreate, token_data: TokenData = Depends(verify_token)):
-        new_ticket = await ticket_service.create_ticket(ticket, user_id=token_data.user_id)
+    @ticket_router.post("/tickets/{ticket_id}", response_model=Ticket, status_code=201)
+    async def create_ticket(token: str, ticket: TicketCreate):
+        token_data = verify_token(token)
+        new_ticket = await ticket_service.create_ticket(phone_number=token_data.phone_number, ticket=ticket)
         return new_ticket
+
+    # @ticket_router.post("/tickets/purchase", response_model=TicketList, status_code=201)
+    # async def purchase_tickets(token: str, list_of_tickets_to_purchase: TicketList ):
+    #     token_data = verify_token(token)
+    #     for ticket in list_of_tickets_to_purchase:
+    #
+    #     return list_of_tickets
 
     @ticket_router.get("/{ticket_id}", response_model=Ticket)
     async def read_ticket(ticket_id: int, token_data: TokenData = Depends(verify_token)):
