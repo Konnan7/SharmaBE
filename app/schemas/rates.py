@@ -8,9 +8,9 @@ from datetime import datetime
 
 
 class Rates(BaseModel):
-    rate_id: str
+    rate_id: int
     amount: int = Field()
-    club_id: int
+    club_id: int = 1
     type: str
 
 

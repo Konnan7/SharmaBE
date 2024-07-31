@@ -12,10 +12,10 @@ class Payments(Base):
     stripe_id = Column(Integer, nullable=False, unique=True)  # Unique constraint added
     date_of_creation = Column(DateTime, default=datetime.datetime.utcnow)
     description = Column(String, nullable=False)
-    source = Column(String, nullable=False)
+    # source = Column(String, nullable=False)
 
 
     __table_args__ = (
         UniqueConstraint("payment_id", name="payment_id_unique"),
-        UniqueConstraint("external_payment_id", name="external_payment_id_unique"),
+        UniqueConstraint("stripe_id", name="stripe_id_unique"),
     )
