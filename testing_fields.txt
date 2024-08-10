@@ -1,0 +1,52 @@
+1- Register
+
+Password1
+
+{
+  "name": "Ignasi",
+  "surname1": "Perejoan",
+  "surname2": "Martí",
+  "date_of_birth": "1991-12-06",
+  "email": "ignasipm@gmail.com",
+  "phone_prefix": "+34",
+  "phone_number": "606582907",
+  "foot_number": 45,
+  "pref_club_id": 1,
+  "account_stripe_id": "string",
+  "reduced": true,
+  "end_reduced": "2024-08-01"
+}
+
+2- Token
+
+{
+  "phone_number": "606582907",
+  "password": "Password1"
+}
+
+3- Access_token
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MDY1ODI5MDciLCJleHAiOjE3MjI1MDE3NjZ9.QsNI2Xrea2YflV0ZRtsvmGeZPVWdUSa6ZZCHwdq920M
+
+4- Purchase
+
+[
+  {
+    "rate_id": 1,
+    "amount": 1000,
+    "club_id": 1,
+    "type": "Entrada puntual mañana"
+  },
+  {
+    "rate_id": 1,
+    "amount": 1000,
+    "club_id": 1,
+    "type": "Entrada puntual mañana"
+  },
+  {
+    "rate_id": 3,
+    "amount": 1400,
+    "club_id": 1,
+    "type": "Entrada puntual normal"
+  }
+]

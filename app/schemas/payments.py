@@ -17,7 +17,7 @@ class CreateStripePayment(BaseModel):
     amount: int
     currency: str = "eur"
     description: str = "Sharma Tickets"
-    payment_method_types: list[str] = ['card']
+    payment_method_types: list[str] = ["card"]
 
 class StripePaymentId(BaseModel):
     id: int

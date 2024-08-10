@@ -19,6 +19,7 @@ alembic = "*"
 bcrypt = "*"
 python-jose = "*"
 passlib = "*"
+stripe = "*"
 
 [dev-packages]
 

@@ -5,6 +5,8 @@ from app.exception_handlers import add_exception_handlers
 from app.routes.qr import create_qr_router
 from app.routes.users import create_user_router
 from app.routes.tickets import create_ticket_router
+from app.routes.payments import create_payments_router
+from app.routes.clubs import create_club_router
 
 from app.config import Config
 
@@ -20,11 +22,16 @@ def create_application() -> FastAPI:
     qr_router = create_qr_router(database_client)
     user_router = create_user_router(database_client)
     ticket_router = create_ticket_router(database_client)
+    payment_router = create_payments_router(database_client)
+    # club_router = create_club_router(database_client)
 
     app = FastAPI()
 #Routers
     app.include_router(qr_router)  # incluye las rutas de qr.py, habra que añadir mas
     app.include_router(user_router)
     app.include_router(ticket_router)
+    app.include_router(payment_router)
+    # app.include_router(club_router)
+
     add_exception_handlers(app)
     return app

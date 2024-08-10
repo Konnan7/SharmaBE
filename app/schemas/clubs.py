@@ -6,8 +6,8 @@ from pydantic import BaseModel, EmailStr
 
 
 class Club(BaseModel):
-    club_id = int
-    horarios = str
-    location = str
-    name = str
-    status = str
+    club_id : int
+    horarios : str
+    location : str
+    name : str
+    status : str

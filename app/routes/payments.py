@@ -2,6 +2,10 @@ from fastapi import APIRouter, HTTPException
 
 import json
 import logging
+import stripe
+import os
+from dotenv import load_dotenv
+
 
 from app.schemas.rates import Rates, RateList
 from app.schemas.payments import CreateStripePayment, PaymentCreate
@@ -15,8 +19,10 @@ from app.clients.db import DatabaseClient
 from app.stripe_dependencies import create_stripe_payment
 from app.dependencies import calculate_total_cost, verify_token
 
+load_dotenv()
 
 logger = logging.getLogger(__name__)
+stripe.api_key = os.getenv("STRIPE_PUBLISHABLE_KEY")
 
 
 def create_payments_router(database_client: DatabaseClient) -> APIRouter:
@@ -34,6 +40,8 @@ def create_payments_router(database_client: DatabaseClient) -> APIRouter:
         total_cost = calculate_total_cost(list_of_rates=list_of_products)
         logger.debug(f"Coste total: {total_cost}")
 
+        logger.debug(f"Creando objeto de Stripe Payment: {CreateStripePayment(amount=total_cost)}")
+
         stripe_payment = create_stripe_payment(stripe_payment=CreateStripePayment(amount=total_cost))
         logger.debug(f"Objeto Stripe de payment: {stripe_payment}")
 
@@ -44,12 +52,9 @@ def create_payments_router(database_client: DatabaseClient) -> APIRouter:
 
         logger.debug(f"Objeto de PaymentCreate: {stripe_to_payment}")
 
-
-
         # Crear Payment en tabla local con los datos de stripe - DONE
         payment = await PaymentService.create_payment(stripe_payment)
         logger.debug(f"Objeto de Payment para la BBDD: {payment}")
-
 
         # Crear tickets con los datos del payment con TicketCreate (rate_snapshot, status, ticket_id) y
         # necesito el token de identificacion

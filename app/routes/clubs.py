@@ -36,4 +36,4 @@ def create_club_router(database_client: DatabaseClient) -> APIRouter:
     async def shutdown():
         await database_client.disconnect()
 
-    return user_router
+    return club_router
