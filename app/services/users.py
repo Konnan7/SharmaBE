@@ -16,8 +16,10 @@ from jose import JWTError, jwt
 
 # App imports
 from models.users import Users
-from app.schemas.users import User, UserCreate, TokenData, Token, UserUpdate
+from app.schemas.users import User, UserCreate, TokenData, Token, UserUpdate, CreateStripeCustomer
 from app.exception_handlers import UserNotFound, UserAlreadyExists
+
+from app.stripe_dependencies import create_stripe_customer
 
 from app.clients.db import DatabaseClient
 
@@ -68,6 +70,14 @@ class UserService:
 
             self.database_client.session.add(new_user)
             self.database_client.session.commit()
+
+            #Create same user in Stripe
+            stripe_user = CreateStripeCustomer(
+                name=user.name,
+                email=user.email,
+                phone=user.phone_number
+            )
+            create_stripe_customer(stripe_user)
 
             res = new_user
         except:
@@ -197,6 +207,12 @@ class UserService:
 
             raise credentials_exception
         return token_data
+
+    def create_stripe_user(self, token: str, user: User):
+        stripe_customer = CreateStripeCustomer(
+            name=user.name
+        )
+        customer = create_stripe_customer(stripe_customer)
 
     def get_password_hash(self,password):
         return self.pwd_context.hash(password)

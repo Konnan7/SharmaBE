@@ -1,14 +1,13 @@
 import stripe
-import os
-from dotenv import load_dotenv
+from app.config import STRIPE_SECRET_KEY
 import logging
 
 from app.schemas.payments import CreateStripePayment
+from app.schemas.users import CreateStripeCustomer
 
-load_dotenv()
 logger = logging.getLogger(__name__)
 
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+stripe.api_key = STRIPE_SECRET_KEY
 
 source = 'tok_visa'  # Este debería ser un token real obtenido desde el frontend
 
@@ -32,4 +31,10 @@ def create_stripe_payment(stripe_payment: CreateStripePayment):
     #     print('Error creando el PaymentIntent:', e)
 
 
-def create_stripe_customer(stripe_payment: CreateStripePayment):
+def create_stripe_customer(stripe_customer: CreateStripeCustomer):
+    customer_create = stripe.Customer.create(
+        name=stripe_customer.name,
+        email=stripe_customer.email,
+        phone=stripe_customer.phone
+    )
+    return customer_create

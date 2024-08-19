@@ -53,3 +53,8 @@ class UserCreate(BaseModel):
 
 class TokenData(BaseModel):
     phone_number: str | None = None
+
+class CreateStripeCustomer(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
