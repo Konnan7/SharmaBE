@@ -38,3 +38,5 @@ def create_stripe_customer(stripe_customer: CreateStripeCustomer):
         phone=stripe_customer.phone
     )
     return customer_create
+
+

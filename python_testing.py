@@ -14,7 +14,7 @@ customer_create= stripe.Customer.create(
   phone="606582907"
 )
 #Añadir Stripe.id a tabla de usuarios
-print(customer_create)
+print(customer_create.id)
 
 payment_intent = stripe.PaymentIntent.create(
   amount=1099,

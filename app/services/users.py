@@ -53,6 +53,15 @@ class UserService:
         hashed_password = self.get_password_hash(password)
 
         try:
+            # Create same user in Stripe
+            stripe_user = CreateStripeCustomer(
+                name=user.name + user.surname1 + user.surname2,
+                email=user.email,
+                phone=user.phone_number
+            )
+            stripe_customer = create_stripe_customer(stripe_user)
+
+            #AÑADIR PAYMENT TYPES: card, paypal, apple pay va pel frontend
             new_user = Users(name=user.name,
                              surname1=user.surname1,
                              surname2=user.surname2,
@@ -62,7 +71,7 @@ class UserService:
                              phone_prefix=user.phone_prefix,
                              foot_number=user.foot_number,
                              pref_club_id=user.pref_club_id,
-                             account_stripe_id=user.account_stripe_id,
+                             account_stripe_id=stripe_customer.id,
                              reduced=user.reduced,
                              end_reduced=user.end_reduced,
                              hashed_password=hashed_password)
@@ -71,16 +80,10 @@ class UserService:
             self.database_client.session.add(new_user)
             self.database_client.session.commit()
 
-            #Create same user in Stripe
-            stripe_user = CreateStripeCustomer(
-                name=user.name,
-                email=user.email,
-                phone=user.phone_number
-            )
-            create_stripe_customer(stripe_user)
-
             res = new_user
+
         except:
+
             self.database_client.session.rollback()
             raise UserAlreadyExists
         return res.user_id
