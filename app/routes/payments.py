@@ -54,6 +54,7 @@ def create_payments_router(database_client: DatabaseClient) -> APIRouter:
 
         # Crear Payment en tabla local con los datos de stripe - DONE
         payment = await PaymentService.create_payment(stripe_payment)
+        await stripe.PaymentIntent.confirm(payment.id, )
         logger.debug(f"Objeto de Payment para la BBDD: {payment}")
 
         # Crear tickets con los datos del payment con TicketCreate (rate_snapshot, status, ticket_id) y
